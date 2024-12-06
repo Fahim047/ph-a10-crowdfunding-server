@@ -19,7 +19,7 @@ const campaignSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		minimumDonation: {
+		minDonation: {
 			type: Number,
 			required: true,
 			min: [10, 'Minimum donation amount must be at least 10.'],
