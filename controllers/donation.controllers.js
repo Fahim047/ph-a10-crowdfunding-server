@@ -31,3 +31,12 @@ export const addDonation = asyncHandler(async (req, res) => {
 
 	res.status(201).json({ success: true, data: donation });
 });
+
+export const getDonationsByUserEmail = asyncHandler(async (req, res) => {
+	const { email } = req.params;
+	const donations = await Donation.find({ 'donor.email': email })
+		.populate('campaignId', 'title')
+		.exec();
+
+	return res.status(200).json({ success: true, data: donations });
+});

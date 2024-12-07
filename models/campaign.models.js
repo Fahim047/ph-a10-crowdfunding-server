@@ -1,5 +1,16 @@
 import mongoose from 'mongoose';
 
+const options = [
+	'personal',
+	'startup',
+	'nonprofit',
+	'environmental',
+	'research',
+	'religious',
+	'orphanage',
+	'charity',
+	'other',
+];
 const campaignSchema = new mongoose.Schema(
 	{
 		title: {
@@ -9,7 +20,7 @@ const campaignSchema = new mongoose.Schema(
 		},
 		type: {
 			type: String,
-			enum: ['personal issue', 'startup', 'business', 'creative ideas'],
+			enum: options,
 			required: true,
 		},
 		description: {
