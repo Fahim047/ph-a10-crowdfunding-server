@@ -26,7 +26,7 @@ export const addCampaign = asyncHandler(async (req, res) => {
 	) {
 		return res
 			.status(400)
-			.json({ status: 'failed', error: 'All fields are required' });
+			.json({ status: false, error: 'All fields are required' });
 	}
 	const newCampaign = await Campaign.create({
 		title,
@@ -45,16 +45,16 @@ export const addCampaign = asyncHandler(async (req, res) => {
 	});
 
 	return res.status(201).json({
-		status: 'success',
+		status: true,
 		data: newCampaign,
 	});
 });
 
-export const getCampaigns = async (req, res) => {
+export const getCampaigns = asyncHandler(async (req, res) => {
 	try {
 		const campaigns = await Campaign.find();
 		res.status(200).json({
-			status: 'success',
+			status: true,
 			data: campaigns,
 		});
 	} catch (err) {
@@ -62,4 +62,56 @@ export const getCampaigns = async (req, res) => {
 			error: err.message,
 		});
 	}
-};
+});
+
+export const getCampaign = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+
+	const campaign = await Campaign.findById(id);
+	if (!campaign) {
+		return res
+			.status(404)
+			.json({ success: false, message: 'Campaign not found' });
+	}
+
+	return res.status(200).json({ success: true, data: campaign });
+});
+
+export const updateCampaign = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+
+	const updatedCampaign = await Campaign.findByIdAndUpdate(id, req.body, {
+		new: true,
+	});
+	if (!updatedCampaign) {
+		return res.status(404).json({
+			success: false,
+			message: 'Campaign not found',
+		});
+	}
+
+	return res.status(200).json({
+		success: true,
+		data: updatedCampaign,
+	});
+});
+
+export const getMyCampaigns = asyncHandler(async (req, res) => {
+	const { email } = req.query;
+
+	if (!email) {
+		return res
+			.status(400)
+			.json({ success: false, message: 'Author email is required' });
+	}
+
+	const campaigns = await Campaign.find({ 'author.email': email });
+
+	if (!campaigns.length) {
+		return res
+			.status(404)
+			.json({ success: false, message: 'No campaigns found for this author' });
+	}
+
+	res.status(200).json({ success: true, data: campaigns });
+});
