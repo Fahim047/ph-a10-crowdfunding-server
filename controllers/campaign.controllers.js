@@ -68,7 +68,6 @@ export const getCampaign = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 
 	const campaign = await Campaign.findById(id);
-	console.log(campaign);
 	if (!campaign) {
 		return res
 			.status(404)
@@ -101,7 +100,6 @@ export const deleteCampaign = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 
 	const deletedCampaign = await Campaign.findByIdAndDelete(id);
-	console.log(deletedCampaign);
 
 	if (!deletedCampaign) {
 		return res.status(404).json({

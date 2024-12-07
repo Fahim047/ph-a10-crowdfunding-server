@@ -16,7 +16,9 @@ app.use((err, req, res, next) => {
 
 // Routers
 import campaignRouter from './routes/campaign.routes.js';
+import donationRouter from './routes/donation.routes.js';
 
 app.use('/api/v1/campaigns', campaignRouter);
+app.use('/api/v1/donations', donationRouter);
 
 export { app };
