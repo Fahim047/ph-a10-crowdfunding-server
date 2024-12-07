@@ -68,6 +68,7 @@ export const getCampaign = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 
 	const campaign = await Campaign.findById(id);
+	console.log(campaign);
 	if (!campaign) {
 		return res
 			.status(404)
@@ -96,8 +97,27 @@ export const updateCampaign = asyncHandler(async (req, res) => {
 	});
 });
 
+export const deleteCampaign = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+
+	const deletedCampaign = await Campaign.findByIdAndDelete(id);
+	console.log(deletedCampaign);
+
+	if (!deletedCampaign) {
+		return res.status(404).json({
+			success: false,
+			message: 'Campaign not found',
+		});
+	}
+
+	return res.status(200).json({
+		success: true,
+		data: deletedCampaign,
+	});
+});
+
 export const getMyCampaigns = asyncHandler(async (req, res) => {
-	const { email } = req.query;
+	const { email } = req.params;
 
 	if (!email) {
 		return res

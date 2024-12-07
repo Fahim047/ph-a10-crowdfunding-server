@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
 	addCampaign,
+	deleteCampaign,
 	getCampaign,
 	getCampaigns,
 	getMyCampaigns,
@@ -9,10 +10,11 @@ import {
 
 const router = Router();
 
+router.get('/user/:email', getMyCampaigns);
 router.get('/', getCampaigns);
 router.post('/', addCampaign);
 router.get('/:id', getCampaign);
 router.put('/:id', updateCampaign);
-router.get('/my-campaigns', getMyCampaigns);
+router.delete('/:id', deleteCampaign);
 
 export default router;
