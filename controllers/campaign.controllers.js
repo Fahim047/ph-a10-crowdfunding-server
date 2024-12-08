@@ -50,7 +50,7 @@ export const addCampaign = asyncHandler(async (req, res) => {
 	});
 });
 
-export const getCampaigns = asyncHandler(async (req, res) => {
+export const getAllCampaigns = asyncHandler(async (req, res) => {
 	try {
 		const campaigns = await Campaign.find();
 		res.status(200).json({
@@ -62,6 +62,16 @@ export const getCampaigns = asyncHandler(async (req, res) => {
 			error: err.message,
 		});
 	}
+});
+
+export const getActiveCampaigns = asyncHandler(async (req, res) => {
+	const campaigns = await Campaign.find({
+		deadline: { $gte: Date.now() },
+	}).limit(6);
+	return res.status(200).json({
+		status: true,
+		data: campaigns,
+	});
 });
 
 export const getCampaign = asyncHandler(async (req, res) => {
@@ -125,11 +135,5 @@ export const getMyCampaigns = asyncHandler(async (req, res) => {
 
 	const campaigns = await Campaign.find({ 'author.email': email });
 
-	if (!campaigns.length) {
-		return res
-			.status(404)
-			.json({ success: false, message: 'No campaigns found for this author' });
-	}
-
-	res.status(200).json({ success: true, data: campaigns });
+	return res.status(200).json({ success: true, data: campaigns });
 });

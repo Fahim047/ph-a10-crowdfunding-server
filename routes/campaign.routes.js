@@ -2,8 +2,9 @@ import { Router } from 'express';
 import {
 	addCampaign,
 	deleteCampaign,
+	getActiveCampaigns,
+	getAllCampaigns,
 	getCampaign,
-	getCampaigns,
 	getMyCampaigns,
 	updateCampaign,
 } from '../controllers/campaign.controllers.js';
@@ -11,7 +12,8 @@ import {
 const router = Router();
 
 router.get('/user/:email', getMyCampaigns);
-router.get('/', getCampaigns);
+router.get('/all', getAllCampaigns);
+router.get('/active', getActiveCampaigns);
 router.post('/', addCampaign);
 router.get('/:id', getCampaign);
 router.put('/:id', updateCampaign);
